@@ -1,0 +1,5 @@
+サーバーはnode クライアントはvite
+node .\server.js
+でまつ。
+
+クライアントはいつも通りviteとかvsのlive linkでいい。

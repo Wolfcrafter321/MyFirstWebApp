@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ちゅうせんあぷり</title>
+</head>
+<body>
+    <div id="wrapper">
+        <h1>抽選</h1>
+        <div id="test">
+            <button id="test-button">テストボタン</button>
+        </div>
+        <div id="welcome">
+            <h2>ようこそ</h2>
+            <!-- ユーザー参加・作成用フォーム。部屋が見つからなければこのまま作る -->
+            <div>
+                <label for="room-name">部屋のID:</label>
+                <input type="text" id="room-name" name="room-name">
+                <br>
+                <label for="password">パスワード:</label>
+                <input type="password" id="password" name="password">
+                <br>
+                <label for="name">お名前:</label>
+                <input type="text" id="name" name="name">
+                <br>
+                <label for="yomi">おなまえ:</label>
+                <input type="text" id="yomi" name="yomi">
+                <br>
+                <button id="button">参加 / 作成</button>
+            </div>
+        </div>
+        <div id="play-screen">
+            <div style="border: 1px solid black; float: left">
+                <h2>プレイ画面</h2>
+                <div id="play-info">
+                    <!-- ここにルーレット情報画面-->
+                    <div id="game-scr-entry">
+                        <p id="game-scr-title">景品タイトル</p>
+                        <p id="game-scr-count">当選数：</p>
+                        <p id="game-scr-entries">現在のエントリー数：</p>
+                    </div>
+                </div>
+                <div id="play-contents">
+                    <!-- ここにルーレット用画面-->
+                    <div id="game-scr-entry">
+                        <button id="game-entry">エントリーする！</button>
+                    </div>
+                    <div id="game-scr-roulette">
+                        <div id="roulette-users-container">
+                            <div id="roulette-users">
+                                <!-- ここにエントリーしたユーザーが表示される -->
+                                <p class="roulette-user">ユーザーA</p>
+                                <p class="roulette-user">ユーザーB</p>
+                                <p class="roulette-user">ユーザーC</p>
+                                <p class="roulette-user">ユーザーD</p>
+                                <p class="roulette-user">ユーザーE</p>
+                                <p class="roulette-user">ユーザーF</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="play-result">
+                    <div id="result-display">
+                        <p id="game-result">当選者: ユーザーA</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="border: 1px solid black; float: left;">
+                <div id="play-host">
+                        <!-- ここにホスト用の設定-->
+                        <h3>部屋に参加</h3>
+                        <label for="setting-title">景品タイトル</label>
+                        <input type="text" id="setting" name="setting">
+                        <br>
+                        <label for="setting-number">当選枠数</label>
+                        <input type="number" id="setting-number" name="setting-number">
+                        <br>
+                        <label for="setting-time">結果までの時間</label>
+                        <input type="number" id="setting-time" name="setting-time">
+                        <br>
+                        <button id="send-to-client-button">情報送信</button>
+                </div>
+                <!-- ここにチャットボックス-->
+                <div id="chatbox">
+                    <div id="chat-messages" style="border: 2px solid #ddd; padding: 5px;">
+                        <!-- メッセージがここに表示される -->
+                        <p>hello<br>
+                        hello<br>
+                        hello<br>
+                        hello<br>
+                        hello<br>
+                        hello<br>
+                        hello<br>
+                        </p>
+                    </div>
+                    <input type="text" id="chat-input" placeholder="メッセージを入力">
+                    <button id="chat-send">送信</button>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    
+        <div id="effect">
+            <!-- エフェクト用のコンテナ -->
+            <!-- 紙吹雪 -->
+        </div>
+    
+        <div id="overlay">
+            <div id="overlay-dark">
+
+            </div>
+            <div id="overlay-content">
+                <p id="overlay-message">オーバーレイメッセージ</p>
+                <button id="overlay-close">閉じる</button>
+            </div>
+        </div>
+    </div>
+<script src="index.js"></script>
+</body>
+</html>
