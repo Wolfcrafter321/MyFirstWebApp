@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		title:"無名",
 		waku:1,
 		time: 10000,
+		entryStatus:false,
+		entryLife: 5
 	}
 
 	function showOverlay(message) {
@@ -104,23 +106,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
 			/* ホストボタン */
 			document.getElementById("host-button-reset").addEventListener("click", () => {
-				const time = document.getElementById('setting-time').value.trim();
+				document.getElementById('setting-entry').checked = false;
 				ws.send(JSON.stringify({
-					type: "roomInfo-reset"
+					type: "roomInfo-reset",
+					data:[
+						document.getElementById('setting-title').value.trim(),
+						document.getElementById('setting-number').value.trim(),
+						document.getElementById('setting-time').value.trim(),
+						document.getElementById('setting-entry').checked,
+					]
 				}));
 			});
 			document.getElementById("host-button-update").addEventListener("click", () => {
-				const title = document.getElementById('setting-title').value.trim();
-				const waku = document.getElementById('setting-number').value.trim();
-				const time = document.getElementById('setting-time').value.trim();
 				ws.send(JSON.stringify({
 					type: "roomInfo-update",
-					data:[title, waku, time]
+					data:[
+						document.getElementById('setting-title').value.trim(),
+						document.getElementById('setting-number').value.trim(),
+						document.getElementById('setting-time').value.trim(),
+						document.getElementById('setting-entry').checked,
+					]
 				}));
 			});
-			document.getElementById("host-button-enable-entry").addEventListener("click", () => {
-			});
-			document.getElementById("host-button-disable-entry").addEventListener("click", () => {
+			document.getElementById("host-button-start").addEventListener("click", () => {
+				ws.send(JSON.stringify({
+					type: "start-game",
+				}));
 			});
 
 
@@ -184,13 +195,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function set_room_data(data){
-		console.log(data)
-		console.log("wanna update")
 		local_data.title = data[0]
 		local_data.waku = data[1]
 		local_data.time = data[2]
+		const entryable = data[3]
 		document.getElementById("game-scr-title").innerHTML = "現在の景品："+local_data.title
 		document.getElementById("game-scr-count").innerHTML = "当選者数："+local_data.waku
+		document.getElementById("game-entry").disabled = entryable==false? true : false;
+
 	}
 
 	function set_screen(mode="welcome"){

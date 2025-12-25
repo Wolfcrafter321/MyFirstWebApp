@@ -68,6 +68,7 @@ wss.on("connection", (ws) => {
 						title: "無題の景品",
 						waku: 1,
 						time: 2,
+						entry: false,
 					}
 				}
 
@@ -79,6 +80,7 @@ wss.on("connection", (ws) => {
 							app_data.rooms[roomId].data.title,
 							app_data.rooms[roomId].data.waku,
 							app_data.rooms[roomId].data.time,
+							app_data.rooms[roomId].data.entry,
 						]
 				}));
 
@@ -110,32 +112,20 @@ wss.on("connection", (ws) => {
 							room.data.title,
 							room.data.waku,
 							room.data.time,
+							room.data.entry,
 						]
 				}));
 
 				break;
 
 			case "roomInfo-reset":
-				for (const [client] of room.users) {
-					client.send(JSON.stringify({
-						type: "reset-broadcast",
-						data: [
-							room.data.title,
-							room.data.waku,
-							room.data.time,
-						]
-					}));
-				}
-				break
-
-			case "roomInfo-update":
-				console.log(msg)
-				console.log(ws.roomId)
 				room = app_data.rooms[ws.roomId];
 				if (!room) return;
 				room.data.title = msg.data[0]
 				room.data.waku = msg.data[1]
 				room.data.time = msg.data[2]
+				room.data.entry = msg.data[3]
+				room.data.currentEntries = []
 				for (const [client] of room.users) {
 					client.send(JSON.stringify({
 						type: "roomInfo-update_broadcast",
@@ -143,6 +133,28 @@ wss.on("connection", (ws) => {
 							room.data.title,
 							room.data.waku,
 							room.data.time,
+							room.data.entry,
+							room.data.currentEntries,
+						]
+					}));
+				}
+				break
+
+			case "roomInfo-update":
+				room = app_data.rooms[ws.roomId];
+				if (!room) return;
+				room.data.title = msg.data[0]
+				room.data.waku = msg.data[1]
+				room.data.time = msg.data[2]
+				room.data.entry = msg.data[3]
+				for (const [client] of room.users) {
+					client.send(JSON.stringify({
+						type: "roomInfo-update_broadcast",
+						data: [
+							room.data.title,
+							room.data.waku,
+							room.data.time,
+							room.data.entry,
 						]
 					}));
 				}
