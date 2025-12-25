@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="index.css">
     <title>ちゅうせんあぷり</title>
 </head>
 <body>
@@ -10,27 +11,28 @@
         <h1>抽選</h1>
         <div id="test">
             <button id="test-button">テストボタン</button>
+			<button id="test-button2">鯖デバッグ</button>
         </div>
         <div id="welcome">
             <h2>ようこそ</h2>
             <!-- ユーザー参加・作成用フォーム。部屋が見つからなければこのまま作る -->
             <div>
-                <label for="room-name">部屋のID:</label>
+				<label for="room-name">部屋のID:</label>
                 <input type="text" id="room-name" name="room-name">
                 <br>
-                <label for="password">パスワード:</label>
+				<!-- <label for="password">パスワード:</label>
                 <input type="password" id="password" name="password">
+				<br> -->
+				<label for="name">お名前:</label>
+				<input type="text" id="name" name="name" value="山田たろう">
                 <br>
-                <label for="name">お名前:</label>
-                <input type="text" id="name" name="name">
-                <br>
-                <label for="yomi">おなまえ:</label>
-                <input type="text" id="yomi" name="yomi">
+				<label for="yomi">おなまえ:</label>
+				<input type="text" id="yomi" name="yomi" value="やまだだろう">
                 <br>
                 <button id="button">参加 / 作成</button>
             </div>
         </div>
-        <div id="play-screen">
+		<div id="play-screen" style="display: none;">
             <div style="border: 1px solid black; float: left">
                 <h2>プレイ画面</h2>
                 <div id="play-info">
@@ -101,12 +103,12 @@
             </div>
         </div>
         <div style="clear: both;"></div>
-    
+
         <div id="effect">
             <!-- エフェクト用のコンテナ -->
             <!-- 紙吹雪 -->
         </div>
-    
+
         <div id="overlay">
             <div id="overlay-dark">
 

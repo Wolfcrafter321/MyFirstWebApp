@@ -1,0 +1,73 @@
+﻿/* オーバーレイ全体 */
+#overlay {
+    position: fixed;
+    inset: 0;
+    /* top/right/bottom/left: 0 */
+    display: none;
+    /* 初期は非表示 */
+    z-index: 1000;
+}
+
+/* 背景の暗転部分 */
+#overlay-dark {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* 中央のコンテンツ */
+#overlay-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 24px 32px;
+    border-radius: 8px;
+    min-width: 280px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* メッセージ */
+#overlay-message {
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+/* 閉じるボタン */
+#overlay-close {
+    padding: 6px 16px;
+    cursor: pointer;
+}
+
+
+
+/* エフェクト */
+#effect {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 999;
+}
+
+.confetti {
+    position: absolute;
+    width: 8px;
+    height: 12px;
+    opacity: 0.9;
+    animation: fly 1.2s ease-out forwards;
+}
+
+@keyframes fly {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--x), var(--y)) rotate(720deg);
+        opacity: 0;
+    }
+}
