@@ -11,7 +11,7 @@
         <h1>抽選</h1>
         <div id="test">
             <button id="test-button">テストボタン</button>
-			<button id="test-button2">鯖デバッグ</button>
+			<button id="test-button2">テストボタン</button>
         </div>
         <div id="welcome">
             <h2>ようこそ</h2>
@@ -32,15 +32,15 @@
                 <button id="button">参加 / 作成</button>
             </div>
         </div>
-		<div id="play-screen" style="display: none;">
-            <div style="border: 1px solid black; float: left">
-                <h2>プレイ画面</h2>
+		<!-- <div id="play-screen" style="display: none;"> -->
+		<div id="play-screen">
+			<div style="border: 1px solid black; float: left; width: 50%;">
+				<h2 id==play-title>プレイ画面</h2>
                 <div id="play-info">
                     <!-- ここにルーレット情報画面-->
                     <div id="game-scr-entry">
                         <p id="game-scr-title">景品タイトル</p>
-                        <p id="game-scr-count">当選数：</p>
-                        <p id="game-scr-entries">現在のエントリー数：</p>
+						<p id="game-scr-count">当選数：</p>
                     </div>
                 </div>
                 <div id="play-contents">
@@ -48,16 +48,13 @@
                     <div id="game-scr-entry">
                         <button id="game-entry">エントリーする！</button>
                     </div>
-                    <div id="game-scr-roulette">
+					<div id="game-scr-roulette">
                         <div id="roulette-users-container">
                             <div id="roulette-users">
                                 <!-- ここにエントリーしたユーザーが表示される -->
                                 <p class="roulette-user">ユーザーA</p>
                                 <p class="roulette-user">ユーザーB</p>
-                                <p class="roulette-user">ユーザーC</p>
-                                <p class="roulette-user">ユーザーD</p>
-                                <p class="roulette-user">ユーザーE</p>
-                                <p class="roulette-user">ユーザーF</p>
+								<p class="roulette-user">ユーザーC</p>
                             </div>
                         </div>
                     </div>
@@ -72,30 +69,25 @@
             <div style="border: 1px solid black; float: left;">
                 <div id="play-host">
                         <!-- ここにホスト用の設定-->
-                        <h3>部屋に参加</h3>
+						<h3>部屋の設定</h3>
                         <label for="setting-title">景品タイトル</label>
-                        <input type="text" id="setting" name="setting">
+						<input type="text" id="setting-title" name="setting-title" value="無名の商品">
                         <br>
                         <label for="setting-number">当選枠数</label>
-                        <input type="number" id="setting-number" name="setting-number">
+						<input type="number" id="setting-number" name="setting-number" value="1">
                         <br>
                         <label for="setting-time">結果までの時間</label>
-                        <input type="number" id="setting-time" name="setting-time">
+						<input type="number" id="setting-time" name="setting-time" value="2">
                         <br>
-                        <button id="send-to-client-button">情報送信</button>
+						<button id="host-button-reset">リセット</button>
+						<button id="host-button-update">情報送信</button>
+						<button id="host-button-enable-entry">エントリー可能にする</button>
+						<button id="host-button-disable-entry">エントリー不可にする</button>
                 </div>
                 <!-- ここにチャットボックス-->
                 <div id="chatbox">
                     <div id="chat-messages" style="border: 2px solid #ddd; padding: 5px;">
-                        <!-- メッセージがここに表示される -->
-                        <p>hello<br>
-                        hello<br>
-                        hello<br>
-                        hello<br>
-                        hello<br>
-                        hello<br>
-                        hello<br>
-                        </p>
+						<!-- メッセージがここに表示される -->
                     </div>
                     <input type="text" id="chat-input" placeholder="メッセージを入力">
                     <button id="chat-send">送信</button>

@@ -1,4 +1,23 @@
-﻿/* オーバーレイ全体 */
+﻿/* 全体 */
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* ようこそ */
+#welcome {
+    margin: 0px;
+    padding: 0px;
+}
+
+
+/* ゲーム画面 */
+#play-screen {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* オーバーレイ */
 #overlay {
     position: fixed;
     inset: 0;
@@ -41,6 +60,14 @@
     cursor: pointer;
 }
 
+/* チャット */
+#chat-messages {
+    max-height: 300px;
+    /* 高さ制限 */
+    overflow-y: auto;
+    padding: 5px;
+    border-radius: 4px;
+}
 
 
 /* エフェクト */

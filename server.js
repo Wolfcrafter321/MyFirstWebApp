@@ -1,78 +1,176 @@
 import { WebSocketServer } from "ws";
 import { randomUUID } from "crypto";
+import { json } from "stream/consumers";
 
 const wss = new WebSocketServer({ port: 25565 });
 
-let data = {
+let app_data = {
 		rooms: {
-				"000000":{
+				"tempalte":{
 						password: null,
-						users: null
+						data:{
+							title:"無題の景品",
+							waku:1,
+							time:3,
+							entry: false,
+							currentEntries:[
+								"", "", ""
+							]
+						},
+						history:[
+							{
+								"無題":{
+									title:"無題の景品",
+									waku:1,
+									time:3,
+									winners:[
+										"", "",
+									]
+								}
+							},{
+								"無題2":{
+									title:"無題の景品",
+									waku:1,
+									time:3,
+									winners:[
+										"", "",
+									]
+								}
+							}
+						],
+						users: null // map
 				},
 		},
 };
 
+function debug() {console.log(app_data)}
+
 wss.on("connection", (ws) => {
 	ws.on("message", (data) => {
+
 		let msg;
-		try {
-				msg = JSON.parse(data.toString());
-		} catch (e) {
-				console.log("JSONエラーが起きました");
-				return; // ここでスルー
-		}
+		try { msg = JSON.parse(data.toString()); } catch (e) { console.log("JSONエラーが起きました"); return; }
 
-		console.log(msg);
+		let room = null
 
-		if (msg.type === "server_debug") {
-			ws.send(JSON.stringify(data));
-			console.log(data)
-		}
+		switch (msg.type){
+			case "test":
+				ws.send(JSON.stringify({type:"test", msg:"hi"}));
+				debug()
+				break;
 
-		if (msg.type === "create_room") {
-			const roomId = randomUUID();
-			data.set(roomId, {
-				password: msg.password ?? null,
-				users: new Map()
-			});
+			case "create_room":
+				const roomId = randomUUID();
+				app_data.rooms[roomId] = {
+					password: msg.password ?? null,
+					users: new Map(),
+					data: {
+						title: "無題の景品",
+						waku: 1,
+						time: 2,
+					}
+				}
 
-			ws.send(JSON.stringify({
-				type: "room_info",
-				roomId
-			}));
-		}
-
-		if (msg.type === "join_room") {
-			const room = rooms.get(msg.roomId);
-			if (!room) return;
-
-			if (room.password && room.password !== msg.password) {
-				ws.send(JSON.stringify({ type: "error", msg: "password error" }));
-				return;
-			}
-
-			ws.roomId = msg.roomId;
-			ws.userName = msg.user;
-			room.users.set(ws, { name: msg.user });
-		}
-
-		if (msg.type === "chat") {
-			const room = rooms.get(ws.roomId);
-			if (!room) return;
-
-			for (const [client] of room.users) {
-				client.send(JSON.stringify({
-					type: "chat_broadcast",
-					user: ws.userName,
-					msg: msg.msg
+				ws.send(JSON.stringify({
+					type: "room_info",
+					roomId: roomId,
+					isHost: true,
+					data: [
+							app_data.rooms[roomId].data.title,
+							app_data.rooms[roomId].data.waku,
+							app_data.rooms[roomId].data.time,
+						]
 				}));
-			}
+
+				ws.roomId = roomId;
+				ws.userName = msg.userdata.name;
+				ws.yomi = msg.userdata.yomi;
+				app_data.rooms[roomId].users.set(ws, { name: msg.userdata.name, yomi: msg.userdata.yomi });
+
+				break;
+
+			case "join_room":
+				room = app_data.rooms[msg.roomId];
+				if (!room) return;
+
+				if (room.password && room.password !== msg.password) {
+					ws.send(JSON.stringify({ type: "error", msg: "password error" }));
+					return;
+				}
+
+				ws.roomId = msg.roomId;
+				ws.userName = msg.userdata.name;
+				ws.yomi = msg.userdata.yomi;
+				room.users.set(ws, { name: msg.userdata.name, yomi: msg.userdata.yomi });
+
+				ws.send(JSON.stringify({
+					type: "room_info",
+					roomId: ws.roomId,
+					data: [
+							room.data.title,
+							room.data.waku,
+							room.data.time,
+						]
+				}));
+
+				break;
+
+			case "roomInfo-reset":
+				for (const [client] of room.users) {
+					client.send(JSON.stringify({
+						type: "reset-broadcast",
+						data: [
+							room.data.title,
+							room.data.waku,
+							room.data.time,
+						]
+					}));
+				}
+				break
+
+			case "roomInfo-update":
+				console.log(msg)
+				console.log(ws.roomId)
+				room = app_data.rooms[ws.roomId];
+				if (!room) return;
+				room.data.title = msg.data[0]
+				room.data.waku = msg.data[1]
+				room.data.time = msg.data[2]
+				for (const [client] of room.users) {
+					client.send(JSON.stringify({
+						type: "roomInfo-update_broadcast",
+						data: [
+							room.data.title,
+							room.data.waku,
+							room.data.time,
+						]
+					}));
+				}
+				break;
+
+			case "chat":
+				room = app_data.rooms[ws.roomId];
+				if (!room) return;
+
+				for (const [client] of room.users) {
+					client.send(JSON.stringify({
+						type: "chat_broadcast",
+						user: ws.userName,
+						msg: msg.msg
+					}));
+				}
+				break;
 		}
 	});
 
 	ws.on("close", () => {
-		console.log("ws client close");
-		// const room = data.rooms.get(ws.roomId);
-		// room?.users.delete(ws);
+		if(!ws.roomId) return;
+		const room = app_data.rooms[ws.roomId];
+		if (!room) return;
+		room.users.delete(ws);
+		if(room.users.size === 0){
+			delete app_data.rooms[ws.roomId]
+			console.log("room deleted "+ ws.roomId)
+		}
 	});
 });
